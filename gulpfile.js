@@ -67,15 +67,14 @@ gulp.task('watch:html', function() {
 gulp.task('js', ['clean:js'], function() {
   return gulp.src(paths.js.input)
     .pipe(plumber())
-    // .pipe(gulp.dest(paths.js.output + '/source'))
-    // .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['es2015']
     }))
     .pipe(concat('bundle.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
-    // .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.js.output));
 });
 
