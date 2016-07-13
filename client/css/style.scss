@@ -1,13 +1,11 @@
 @import 'reset';
 
-$font-stack: "Comic Sans MS", cursive, sans-serif;
-$primary-color: green;
+$primary-color: blue;
 
 body {
-  font: 100% $font-stack;
+
   color: $primary-color;
 }
-
 
 nav {
   ul {

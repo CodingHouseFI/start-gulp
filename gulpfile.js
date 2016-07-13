@@ -7,11 +7,13 @@ const uglify = require('gulp-uglify');
 const plumber = require('gulp-plumber');
 const nodemon = require('gulp-nodemon');
 const sass = require('gulp-sass');
+const eslint = require('gulp-eslint');
+const browser = require('browser-sync');
 const sourcemaps = require('gulp-sourcemaps');
 const ngAnnotate = require('gulp-ng-annotate');
 const del = require('del');
 
-let paths = {
+const paths = {
   html: {
     input: './client/html/**/*.html',
     output: './public/html'
@@ -36,8 +38,27 @@ gulp.task('build', ['favicon', 'html', 'css', 'js']);
 
 gulp.task('watch', ['watch:html', 'watch:css', 'watch:js']);
 
-gulp.task('serve', function() {
-  nodemon({
+gulp.task('serve', ['nodemon'], function() {
+  browser.init({
+    proxy: "http://localhost:8000",
+    files: ['public/**/*.*']
+  });
+});
+
+
+gulp.task('watch:lint', ['lint'], function() {
+  return gulp.watch(['**/*.js', '!node_modules/**', '!public/**'], ['lint']);
+})
+
+gulp.task('lint', function() {
+  return gulp.src(['**/*.js', '!node_modules/**', '!public/**'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+});
+
+
+gulp.task('nodemon', function() {
+  return nodemon({
     ignore: ['./client', './public']
   });
 });
